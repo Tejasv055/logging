@@ -2,6 +2,7 @@ package com.example.logging.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
@@ -20,12 +21,16 @@ public class CorrelationIdFilter implements Filter {
                          final FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+
         String correlationId = httpRequest.getHeader(HEADER);
 
         if (correlationId == null || correlationId.isBlank()) {
             correlationId = UUID.randomUUID().toString();
         }
         MDC.put(MDC_KEY, correlationId);
+
+        httpResponse.setHeader(HEADER, correlationId);
         try {
             chain.doFilter(request, response);
         }

@@ -1,30 +1,30 @@
 package com.example.logging.controller;
 
+import com.example.logging.service.LoggingService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@AllArgsConstructor
 public class LoggingController {
-    private static final Logger log =
-        LoggerFactory.getLogger(LoggingController.class);
+    private final LoggingService loggingService;
+//
+//    public LoggingController (final LoggingService loggingService) {
+//        this.loggingService = loggingService;
+//    }
 
     @GetMapping("/test")
     public String testLogging() {
-        log.info("Test endpoint called");
+        return loggingService.processLogging();
 
-        return "Logging test successful";
     }
 
     @GetMapping("/logs")
     public String testLogs() {
 
-        log.debug("This is a DEBUG log");
-        log.info("This is an INFO log");
-        log.warn("This is a WARN log");
-        log.error("This is an ERROR log");
-
-        return "Logs generated";
+        return loggingService.processLogging();
     }
 }
