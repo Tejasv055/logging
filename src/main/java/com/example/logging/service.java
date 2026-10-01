@@ -1,4 +1,4 @@
 package com.example.logging;
 
-public class Controller {
+public class service {
 }
